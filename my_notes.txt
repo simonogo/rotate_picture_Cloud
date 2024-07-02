@@ -1,0 +1,45 @@
+# AUTHORIZATION   35.203.100.160
+gcloud auth login
+
+# AUTHORIZATION to ADC (Application Default Credentials)
+gcloud auth application-default login
+
+# Solution to 
+pip install proto-plus==1.24.0.dev1
+
+# Fast way to connect with my_user
+gcloud compute ssh my_user@$VM_NAME
+
+# EVENT BROKER
+python3 event_broke.py $PROJECT_NAME $NOTIF_NAME --api $API_ADDR
+
+# USEFUL COMMANDS
+
+gcloud projects list - listuje wszystkie projekty przypisane do konta 
+
+gcloud config set project <project-id>  - logowanie do projektu  
+
+gcloud compute instances list - listuje wszytskie maszyny w projekcie 
+
+gcloud compute instances start <instance-id>  - startuje instację maszyny 
+
+gcloud compute instances start <instance-id> - wstrzymuje maszynę  
+
+gcloud compute instances describe <instance-id> - opisuje maszynę 
+
+gcloud compute machine-types describe <maszyna> --zone <strefa> - opisuje maszynę 
+
+gcloud compute images list | grep debian – wyszukuje obraz maszyny  
+
+gcloud compute instances create mymachine --machine-type=g1-small --image=debian-11-bullseye-v20240611 --zone=europe-west4-c --image-project=debian-cloud  - tworzenie przykładowej maszyny  
+
+gcloud compute ssh NAZWA_MASZYNY --ssh-key-file=ŚCIEŻKA_DO_KLUCZA_PRYWATNEGO  - logowanie do ssh 
+
+gcloud compute ssh NAZWA_MASZYNY --command="sudo su -" - logowanie bezposredniodo roota 
+
+gcloud compute instances add-metadata NAZWA_MASZYNY --metadata=KLUCZ=WARTOŚĆ 
+
+gcloud compute connect-to-serial-port INSTANCE_NAME 
+
+
+

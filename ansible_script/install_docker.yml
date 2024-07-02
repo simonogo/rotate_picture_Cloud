@@ -1,0 +1,16 @@
+- name: Configure new user
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Docker
+      become: yes
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Start Docker service
+      become: yes
+      service:
+        name: docker
+        state: started

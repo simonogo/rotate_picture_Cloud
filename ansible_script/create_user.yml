@@ -1,0 +1,65 @@
+- name: Configure new user
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Create my_user
+      user:
+        name: my_user
+        shell: /bin/bash
+        create_home: yes
+        groups: users, sudo
+        password: "{{ 'qwerty' | password_hash('sha512') }}"
+      become: yes
+
+    - name: Create directory structure for my_user
+      file:
+        path: "/home/my_user/workspace/{{ item }}"
+        state: directory
+        owner: my_user
+        group: my_user
+        mode: '0755'
+      with_items:
+        - received_picture
+        - sending_picture
+        - rotate_script
+        - env_scripts
+
+    - name: Create directory structure for my_user
+      file:
+        path: "/home/my_user/workspace/sending_picture/event_broker/{{ item }}"
+        state: directory
+        owner: my_user
+        group: my_user
+        mode: '0755'
+      with_items:
+        - initial_picture
+        - rotated_picture
+
+    - name: Add alias ll to .bashrc
+      lineinfile:
+        path: "/home/my_user/.bashrc"
+        line: "{{ item }}"
+        create: yes
+        owner: my_user
+        group: my_user
+        mode: '0644'
+      with_items:
+        - "alias ll='ls -alF'"
+        - "alias startEnv='source /home/my_user/workspace/sending_picture/venv/bin/activate'"
+
+    - name: Install venv for Python
+      apt:
+        name: python3-venv
+        state: present
+      become: yes
+
+    - name: Create virtual environment
+      command: python3 -m venv /home/my_user/workspace/sending_picture/venv
+      become: yes
+
+    - name: Install packages into virtual environment
+      ansible.builtin.pip:
+        executable: /home/my_user/workspace/sending_picture/venv/bin/pip  
+        requirements: /root/user_creation/requirements.txt 
+    
+
